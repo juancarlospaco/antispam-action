@@ -6,7 +6,7 @@ const core     = require('@actions/core')
 const marked   = require('marked')
 const { execSync } = require('child_process')
 const {context, GitHub} = require('@actions/github')
-
+const { eld } = await import('eld')
 
 const startedDatetime  = new Date()
 
@@ -21,7 +21,7 @@ function cfg(key) {
 
 function checkAuthorAssociation() {
   const authorPerm = context.payload.comment.author_association.trim().toLowerCase()
-  let result = (authorPerm === "owner" || authorPerm === "collaborator" || authorPerm === "member" || debugGodModes.includes(context.payload.comment.user.login.toLowerCase()))
+  let result = (authorPerm === "owner" || authorPerm === "collaborator" || authorPerm === "member")
   console.assert(typeof result === "boolean", `result must be boolean, but got ${ typeof result }`)
   return result
 };
@@ -94,5 +94,6 @@ if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() )
   // Add Reaction of "Eyes" as seen.
   const githubComment = context.payload.comment.body.trim()
   console.log(githubComment)
+  console.log(eld.detect(githubComment))
   } else { console.warn("githubClient.addReaction failed, repo permissions error?.")
 }
