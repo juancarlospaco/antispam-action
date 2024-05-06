@@ -96,7 +96,7 @@ if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() )
   console.log(githubComment)
   const detector = new LanguageDetect()
 
-  const language = detector.detect(githubComment)
+  const language = detector.detect(githubComment, 5)
   if (language && language.length > 0) {
     console.log(language)
   } else {
