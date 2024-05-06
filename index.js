@@ -6,7 +6,7 @@ const core     = require('@actions/core')
 const marked   = require('marked')
 const { execSync } = require('child_process')
 const {context, GitHub} = require('@actions/github')
-const { eld } = import('eld')
+const LanguageDetect = require('languagedetect')
 
 const startedDatetime  = new Date()
 
@@ -93,7 +93,9 @@ if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() )
   const githubClient  = new GitHub(cfg('github-token'))
   // Add Reaction of "Eyes" as seen.
   const githubComment = context.payload.comment.body.trim()
+  const detector = new LanguageDetect()
+
   console.log(githubComment)
-  console.log(eld.detect(githubComment))
+  console.log(detector.detect(githubComment))
   } else { console.warn("githubClient.addReaction failed, repo permissions error?.")
 }
