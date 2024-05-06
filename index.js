@@ -98,7 +98,10 @@ if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() )
 
   const language = detector.detect(githubComment, 5)
   if (language && language.length > 0) {
-    console.log(language)
+    const isEnglish = language.some(language => language[0] === 'english')
+
+    console.log("isEnglish", isEnglish)
+
   } else {
     console.warn("Language detection failed.")
   }
