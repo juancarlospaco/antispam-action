@@ -1,12 +1,10 @@
 name: "selftesting"
 on:
-  issue_comment:
-    types: created
+  issue:
+    types: [opened]
 
 jobs:
-  bisects:
-    if: |
-      github.event.issue.pull_request == null
+  antispam:
     name: AntiSpam
     runs-on: ubuntu-latest
     steps:
