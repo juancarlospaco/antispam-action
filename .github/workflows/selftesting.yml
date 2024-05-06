@@ -1,15 +1,12 @@
 name: "selftesting"
 on:
-  issue_comment:
-    types: [created]
-
+  issues:
+    types: opened
 jobs:
   antispam:
     name: AntiSpam
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
       - uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
