@@ -6,7 +6,7 @@ on:
 jobs:
   bisects:
     if: |
-      github.event_name == 'issue_comment' && github.event.issue.pull_request == null
+      github.event_name == 'issue_opened' && github.event.issue.pull_request == null
     name: AntiSpam
     runs-on: ubuntu-latest
     steps:

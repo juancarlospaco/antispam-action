@@ -93,14 +93,16 @@ if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() )
   const githubClient  = new GitHub(cfg('github-token'))
   // Add Reaction of "Eyes" as seen.
   const githubComment = context.payload.comment.body.trim()
-  console.log(githubComment)
   const detector = new LanguageDetect()
-
   const language = detector.detect(githubComment, 5)
+
   if (language && language.length > 0) {
     const isEnglish = language.some(language => language[0] === 'english')
-
     console.log("isEnglish", isEnglish)
+    if (!isEnglish) {
+      console.log("NOT ENGLISH")
+
+    }
 
   } else {
     console.warn("Language detection failed.")
