@@ -92,9 +92,7 @@ if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() )
   // Check if we have permissions.
   const githubClient  = new GitHub(cfg('github-token'))
   // Add Reaction of "Eyes" as seen.
-  if (addReaction(githubClient, "eyes")) {
-    const githubComment = context.payload.comment.body.trim()
-    console.log(githubComment)
-  }
-  else { console.warn("githubClient.addReaction failed, repo permissions error?.") }
+  const githubComment = context.payload.comment.body.trim()
+  console.log(githubComment)
+  } else { console.warn("githubClient.addReaction failed, repo permissions error?.")
 }
