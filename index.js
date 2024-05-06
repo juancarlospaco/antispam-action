@@ -6,7 +6,7 @@ const core     = require('@actions/core')
 const marked   = require('marked')
 const { execSync } = require('child_process')
 const {context, GitHub} = require('@actions/github')
-import { eld } from 'eld'
+const { eld } = import('eld')
 
 const startedDatetime  = new Date()
 
