@@ -1,0 +1,13 @@
+name: 'antispam-action'
+description: 'AntiSpam action'
+author: 'juancarlospaco'
+inputs:
+  github-token:
+    description: 'GitHub token'
+    required:    true
+runs:
+  using: 'node16'
+  main:  'index.js'
+branding:
+  icon:  'eye'
+  color: 'red'
