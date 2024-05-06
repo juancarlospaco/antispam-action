@@ -1,7 +1,7 @@
 name: "selftesting"
 on:
-  issue:
-    types: [opened]
+  issue_comment:
+    types: [created]
 
 jobs:
   antispam:
