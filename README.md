@@ -1,2 +1,1 @@
-# antispam-action
-Anti-Spam Github Action
+# AntiSpam-action
