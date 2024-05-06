@@ -93,9 +93,16 @@ if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() )
   const githubClient  = new GitHub(cfg('github-token'))
   // Add Reaction of "Eyes" as seen.
   const githubComment = context.payload.comment.body.trim()
+  console.log(githubComment)
   const detector = new LanguageDetect()
 
-  console.log(githubComment)
-  console.log(detector.detect(githubComment))
+  const language = detector.detect(githubComment)
+  if (language && language.length > 0) {
+    console.log(language)
+  } else {
+    console.warn("Language detection failed.")
+  }
+
+
   } else { console.warn("githubClient.addReaction failed, repo permissions error?.")
 }
