@@ -89,29 +89,33 @@ function parseGithubComment(comment) {
 
 // Only run if this is a new issue opened and author is not owner or collaborator.
 if (context.payload.action === 'opened' && context.payload.issue.state === 'open' && context.payload.issue.author_association !== 'NONE') {
+  // Get issue title and body as a string.
   const title = context.payload.issue.title.trim()
   const body  = context.payload.issue.body.trim()
+  // If we have the title and body as strings.
   if (title && title.length > 0 && body && body.length > 0) {
+    // Detect language from title and body strings.
     const detector      = new LanguageDetect()
     const titleLanguage = detector.detect(title, 5)
     const bodyLanguage  = detector.detect(body, 5)
     console.log("titleLanguage", titleLanguage)
     console.log("bodyLanguage", bodyLanguage)
+    // If language is detected in title and body
     if (bodyLanguage && bodyLanguage.length > 0 && titleLanguage && titleLanguage.length > 0) {
       const titleIsEnglish = titleLanguage.some(it => it[0] === 'english')
       const bodyIsEnglish  = bodyLanguage.some( it => it[0] === 'english')
       console.log("titleIsEnglish", titleIsEnglish)
       console.log("bodyIsEnglish" , bodyIsEnglish)
+      // If it is English
       if (titleIsEnglish && bodyIsEnglish) {
         console.log("ENGLISH")
       } else {
         console.log("NOT ENGLISH")
       }
     } else {
-      console.warn("Language detection failed.")
+      console.warn("ANTISPAM: Language detection failed.")
     }
+  } else {
+    console.warn("ANTISPAM: Issue title or body is empty.")
   }
-
-
-  } else { console.warn("githubClient.addReaction failed, repo permissions error?.")
 }
