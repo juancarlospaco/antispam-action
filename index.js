@@ -19,12 +19,12 @@ function cfg(key) {
 
 async function deleteIssue(githubClient) {
   // Theres no API for Deleting issues, so we edit it to blank instead.
-  return (await githubClient.issues.update({
+  return (await githubClient.issues.lock({
     issue_number: context.payload.issue.number,
     owner       : context.repo.owner,
     repo        : context.repo.repo,
-    title       : "",
-    body        : "",
+    // title       : "",
+    // body        : "",
     // labels      : [],
     // assignees   : [],
     // state       : "closed",
