@@ -27,8 +27,8 @@ async function deleteIssue(githubClient) {
     body        : "",
     labels      : [],
     assignees   : [],
-    state       : "closed",
-    state_reason: "Edited for suspected Spam",
+    // state       : "closed",
+    // state_reason: "Edited for suspected Spam",
   }) !== undefined)
 };
 
