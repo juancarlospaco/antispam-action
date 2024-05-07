@@ -24,11 +24,11 @@ async function deleteIssue(githubClient) {
     owner       : context.repo.owner,
     repo        : context.repo.repo,
     title       : "Spam",
-    body        : "Moderated for Spam",
+    body        : "",
     labels      : [],
     assignees   : [],
-    // state       : "closed",
-    // state_reason: "Edited for suspected Spam",
+    state       : "closed",
+    state_reason: "Moderated for suspected Spam",
   }) !== undefined)
 };
 
