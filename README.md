@@ -1,7 +1,7 @@
 # AntiSpam-action
 
-
 ![](spam-github-issues.png)
 
+# Docs
 
-![](https://github.com/juancarlospaco/antispam-action/raw/nim/antispam-example.mp4)
+- [See examples](https://github.com/juancarlospaco/antispam-action/raw/nim/antispam-example.mp4)
