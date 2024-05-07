@@ -88,7 +88,10 @@ function parseGithubComment(comment) {
 
 
 // Only run if this is an "issue_comment" and comment startsWith commentPrefixes.
-if (context.payload.comment.body.trim().length > 0 && checkAuthorAssociation() ) {
+if (context.payload.comment > 0 && checkAuthorAssociation() ) {
+
+  console.log(context.payload.comment)
+
   // Check if we have permissions.
   const githubClient  = new GitHub(cfg('github-token'))
   // Add Reaction of "Eyes" as seen.
