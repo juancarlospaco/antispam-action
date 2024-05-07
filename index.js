@@ -56,7 +56,8 @@ async function lockIssue(githubClient) {
 
 
 // Only run if this is a new issue opened and author is not owner or collaborator.
-if (context.payload.action === 'opened' && context.payload.issue.state === 'open' && context.payload.issue.author_association !== 'NONE') {
+if (true) {
+  console.log(ontext.payload)
   // Get issue title and body as a string.
   const title = context.payload.issue.title.trim()
   const body  = context.payload.issue.body.trim()

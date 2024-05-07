@@ -2,13 +2,15 @@ name: "selftesting"
 on:
   issues:
     types: opened
-
+  discussion:
+    types: created
 jobs:
   antispam:
     name: AntiSpam
     runs-on: ubuntu-latest
     permissions:
       issues: write
+      discussions: write
     steps:
       - uses: actions/checkout@v3
       - uses: ./
