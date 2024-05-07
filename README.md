@@ -4,4 +4,4 @@
 
 # Docs
 
-- [See examples](https://github.com/juancarlospaco/antispam-action/raw/nim/antispam-example.mp4)
+- [**See examples!**](https://github.com/juancarlospaco/antispam-action/raw/nim/antispam-example.mp4)
