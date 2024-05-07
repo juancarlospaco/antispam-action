@@ -87,30 +87,27 @@ function parseGithubComment(comment) {
 }
 
 
-// Only run if this is an "issue_comment" and comment startsWith commentPrefixes.
-if (context.payload.action === 'opened') {
-
-  console.log(context.payload.issue)
-
-  // Check if we have permissions.
-  const githubClient  = new GitHub(cfg('github-token'))
-  // Add Reaction of "Eyes" as seen.
+// Only run if this is a new issue opened and author is not owner or collaborator.
+if (context.payload.action === 'opened' && context.payload.issue.state === 'open' && context.payload.issue.author_association !== 'NONE') {
   const title = context.payload.issue.title.trim()
   const body  = context.payload.issue.body.trim()
-  const detector = new LanguageDetect()
-  const titleLanguage = detector.detect(title, 5)
-  const bodyLanguage = detector.detect(body, 5)
-
-  if (bodyLanguage && bodyLanguage.length > 0) {
-    const isEnglish = bodyLanguage.some(language => language[0] === 'english')
-    console.log("isEnglish", isEnglish)
-    if (!isEnglish) {
-      console.log("NOT ENGLISH")
-
+  if (title && title.length > 0 && body && body.length > 0) {
+    const detector      = new LanguageDetect()
+    const titleLanguage = detector.detect(title, 5)
+    const bodyLanguage  = detector.detect(body, 5)
+    if (bodyLanguage && bodyLanguage.length > 0 && titleLanguage && titleLanguage.length > 0) {
+      const titleIsEnglish = titleLanguage.some(it => it[0] === 'english')
+      const bodyIsEnglish  = bodyLanguage.some( it => it[0] === 'english')
+      console.log("titleIsEnglish", titleIsEnglish)
+      console.log("bodyIsEnglish" , bodyIsEnglish)
+      if (titleIsEnglish && bodyIsEnglish) {
+        console.log("ENGLISH")
+      } else {
+        console.log("NOT ENGLISH")
+      }
+    } else {
+      console.warn("Language detection failed.")
     }
-
-  } else {
-    console.warn("Language detection failed.")
   }
 
 
