@@ -1,12 +1,7 @@
 'use strict';
-const fs       = require('fs')
-const os       = require('os')
-const path     = require('path')
-const core     = require('@actions/core')
-const marked   = require('marked')
-const { execSync } = require('child_process')
+const core              = require('@actions/core')
 const {context, GitHub} = require('@actions/github')
-const LanguageDetect = require('languagedetect')
+const LanguageDetect    = require('languagedetect')
 
 
 function cfg(key) {
@@ -56,7 +51,7 @@ async function lockIssue(githubClient) {
 
 
 // Only run if this is a new issue opened and author is not owner or collaborator.
-if (context.payload.action === 'opened' && context.payload.issue.state === 'open' && context.payload.issue.author_association !== 'NONE') {
+if (context.payload.action === 'opened' && context.payload.issue.state === 'open' && context.payload.issue.author_association === 'NONE') {
   // Get issue title and body as a string.
   const title = context.payload.issue.title.trim()
   const body  = context.payload.issue.body.trim()
@@ -90,6 +85,3 @@ if (context.payload.action === 'opened' && context.payload.issue.state === 'open
     console.warn("ANTISPAM: Issue title or body is empty.")
   }
 }
-
-
-// TODO: pull requests ???
