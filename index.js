@@ -1,12 +1,14 @@
 'use strict';
-const fs       = require('fs')
-const os       = require('os')
-const path     = require('path')
-const core     = require('@actions/core')
-const marked   = require('marked')
-const { execSync } = require('child_process')
+const fs                = require('fs')
+const os                = require('os')
+const path              = require('path')
+const core              = require('@actions/core')
+const marked            = require('marked')
+const { execSync }      = require('child_process')
 const {context, GitHub} = require('@actions/github')
-const LanguageDetect = require('languagedetect')
+const LanguageDetect    = require('languagedetect')
+const isNewIssue        = (context.payload.action === 'opened'  && context.payload.issue.state === 'open'      && context.payload.issue.author_association !== 'NONE')
+const isNewDiscussion   = (context.payload.action === 'created' && context.payload.discussion.state === 'open' && context.payload.discussion.author_association !== 'NONE')
 
 
 function cfg(key) {
@@ -21,7 +23,7 @@ async function moderateIssue(githubClient, title, body) {
   // Theres no API for Deleting issues, so we edit it to blank instead.
   const moderatorMessage = `
     **Moderated for suspected Spam.**
-    - Only English language is supported for issues, because moderators only speak English.
+    - Only English language is supported, because moderators only speak English.
     <details>
     <summary>Diagnostics</summary>
     **Title**
@@ -55,12 +57,35 @@ async function lockIssue(githubClient) {
 };
 
 
-// Only run if this is a new issue opened and author is not owner or collaborator.
-if (true) {
+async function moderateDiscussion(githubClient, title, body) {
+  // Theres no API for Deleting issues, so we edit it to blank instead.
+  const moderatorMessage = "test"
+  return (await githubClient.discussions.update({
+    discussion_number: context.payload.discussion.number,
+    owner       : context.repo.owner,
+    repo        : context.repo.repo,
+    // title       : "spam",
+    // body        : moderatorMessage.trim(),
+    // labels      : ["spam"],
+    // assignees   : [],
+    // milestone   : null,
+    // state       : "closed",
+    // state_reason: "not_planned",
+  }) !== undefined)
+};
+
+
+// Only run if this is a new issue or discussion opened and author is not owner or collaborator.
+if (isNewIssue || isNewDiscussion) {
   console.log(context.payload)
   // Get issue title and body as a string.
-  const title = context.payload.issue.title.trim()
-  const body  = context.payload.issue.body.trim()
+  if (isNewIssue) {
+    const title = context.payload.issue.title.trim()
+    const body  = context.payload.issue.body.trim()
+  } else {
+    const title = context.payload.discussion.title.trim()
+    const body  = context.payload.discussion.body.trim()
+  }
   // If we have the title and body as strings.
   if (title && title.length > 0 && body && body.length > 0) {
     // Detect language from title and body strings.
@@ -81,8 +106,12 @@ if (true) {
       } else {
         console.log("NOT ENGLISH")
         const githubClient  = new GitHub(cfg('github-token'))
-        console.log(moderateIssue(githubClient, JSON.stringify(titleLanguage), JSON.stringify(bodyLanguage)))
-        console.log(lockIssue(githubClient))
+        if (isNewIssue) {
+          console.log(moderateIssue(githubClient, JSON.stringify(titleLanguage), JSON.stringify(bodyLanguage)))
+          console.log(lockIssue(githubClient))
+        } else {
+          moderateDiscussion(githubClient, JSON.stringify(titleLanguage), JSON.stringify(bodyLanguage))
+        }
       }
     } else {
       console.warn("ANTISPAM: Language detection failed.")
