@@ -8,8 +8,6 @@ const { execSync } = require('child_process')
 const {context, GitHub} = require('@actions/github')
 const LanguageDetect = require('languagedetect')
 
-const startedDatetime  = new Date()
-
 
 function cfg(key) {
   console.assert(typeof key === "string", `key must be string, but got ${ typeof key }`)
@@ -19,72 +17,13 @@ function cfg(key) {
 };
 
 
-function checkAuthorAssociation() {
-  const authorPerm = context.payload.comment.author_association.trim().toLowerCase()
-  let result = (authorPerm === "owner" || authorPerm === "collaborator" || authorPerm === "member")
-  console.assert(typeof result === "boolean", `result must be boolean, but got ${ typeof result }`)
-  return result
-};
-
-
-async function addReaction(githubClient, reaction) {
-  console.assert(typeof reaction === "string", `reaction must be string, but got ${ typeof reaction }`)
-  return (await githubClient.reactions.createForIssueComment({
-    comment_id: context.payload.comment.id,
-    content   : reaction.trim().toLowerCase(),
-    owner     : context.repo.owner,
-    repo      : context.repo.repo,
-  }) !== undefined)
-};
-
-
-async function addIssueComment(githubClient, issueCommentBody) {
-  console.assert(typeof issueCommentBody === "string", `issueCommentBody must be string, but got ${ typeof issueCommentBody }`)
-  return (await githubClient.issues.createComment({
-    issue_number: context.issue.number,
+async function deleteIssue(githubClient) {
+  return (await githubClient.issues.delete({
+    issue_number: context.payload.issue.number,
     owner       : context.repo.owner,
     repo        : context.repo.repo,
-    body        : issueCommentBody.trim(),
   }) !== undefined)
 };
-
-
-function parseGithubComment(comment) {
-  console.assert(typeof comment === "string", `comment must be string, but got ${ typeof comment }`)
-  const tokens = marked.Lexer.lex(comment)
-  const allowedFileExtensions = ["c", "cpp", "c++", "h", "hpp", "js", "json", "txt"]
-  let result = ""
-  for (const token of tokens) {
-    if (token.type === 'code' && token.text.length > 0 && token.lang !== undefined) {
-      if (token.lang === 'nim') {
-        if (nimFileCounter > 0) {
-          const xtraFile = temporaryFile.replace(".nim", `${ nimFileCounter }.nim`)
-          if (!fs.existsSync(xtraFile)) {
-            fs.writeFileSync(xtraFile, token.text.trim())
-            fs.chmodSync(xtraFile, "444")
-          }
-        } else {
-          nimFileCounter += 1
-          result = token.text.trim()
-          result = result.split('\n').filter(line => line.trim() !== '').join('\n')
-        }
-      } else if (allowedFileExtensions.includes(token.lang)) {
-        const xtraFile = `${ process.cwd() }/temp.${token.lang}`
-        if (!fs.existsSync(xtraFile)) {
-          fs.writeFileSync(xtraFile, token.text.trim())
-          fs.chmodSync(xtraFile, "444")
-        }
-      } else if (token.lang === 'cfg' || token.lang === 'ini') {
-        const xtraFile = `${ temporaryFile }.cfg`
-        if (!fs.existsSync(xtraFile)) {
-          fs.writeFileSync(xtraFile, token.text.trim())
-          fs.chmodSync(xtraFile, "444")
-        }
-      }
-    }
-  }
-  return result
-}
 
 
 // Only run if this is a new issue opened and author is not owner or collaborator.
@@ -111,6 +50,8 @@ if (context.payload.action === 'opened' && context.payload.issue.state === 'open
         console.log("ENGLISH")
       } else {
         console.log("NOT ENGLISH")
+        const githubClient  = new GitHub(cfg('github-token'))
+        console.log(deleteIssue(githubClient))
       }
     } else {
       console.warn("ANTISPAM: Language detection failed.")
