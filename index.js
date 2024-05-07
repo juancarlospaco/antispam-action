@@ -25,8 +25,8 @@ async function deleteIssue(githubClient) {
     repo        : context.repo.repo,
     title       : "",
     body        : "",
-    labels      : [],
-    assignees   : [],
+    // labels      : [],
+    // assignees   : [],
     // state       : "closed",
     // state_reason: "Edited for suspected Spam",
   }) !== undefined)
