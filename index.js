@@ -79,12 +79,14 @@ async function moderateDiscussion(githubClient, title, body) {
 if (isNewIssue || isNewDiscussion) {
   console.log(context.payload)
   // Get issue title and body as a string.
+  let title = ""
+  let body  = ""
   if (isNewIssue) {
-    const title = context.payload.issue.title.trim()
-    const body  = context.payload.issue.body.trim()
+    title = context.payload.issue.title.trim()
+    body  = context.payload.issue.body.trim()
   } else {
-    const title = context.payload.discussion.title.trim()
-    const body  = context.payload.discussion.body.trim()
+    title = context.payload.discussion.title.trim()
+    body  = context.payload.discussion.body.trim()
   }
   // If we have the title and body as strings.
   if (title && title.length > 0 && body && body.length > 0) {
