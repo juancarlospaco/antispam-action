@@ -4,7 +4,7 @@
 
 # Docs
 
-- [**See examples!**](https://github.com/juancarlospaco/antispam-action/raw/nim/antispam-example.mp4)
+https://github.com/juancarlospaco/antispam-action/assets/1189414/04effebc-1cbc-4360-a43d-6cf46831c0de
 
 # Use
 
