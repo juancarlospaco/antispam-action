@@ -17,19 +17,29 @@ function cfg(key) {
 };
 
 
-async function deleteIssue(githubClient) {
+async function moderateIssue(githubClient) {
   // Theres no API for Deleting issues, so we edit it to blank instead.
   return (await githubClient.issues.update({
     issue_number: context.payload.issue.number,
     owner       : context.repo.owner,
     repo        : context.repo.repo,
-    title       : "Spam",
-    body        : "Moderated for suspected Spam",
-    labels      : [],
+    title       : "spam",
+    body        : "Moderated for suspected Spam. Only English is supported for issues, because the moderators only speak English.",
+    labels      : ["spam"],
     assignees   : [],
     milestone   : null,
     state       : "closed",
     state_reason: "not_planned",
+  }) !== undefined)
+};
+
+
+async function lockIssue(githubClient) {
+  // Theres no API for Deleting issues, so we lock it instead.
+  return (await githubClient.issues.lock({
+    issue_number: context.payload.issue.number,
+    owner       : context.repo.owner,
+    repo        : context.repo.repo,
   }) !== undefined)
 };
 
@@ -59,7 +69,8 @@ if (context.payload.action === 'opened' && context.payload.issue.state === 'open
       } else {
         console.log("NOT ENGLISH")
         const githubClient  = new GitHub(cfg('github-token'))
-        console.log(deleteIssue(githubClient))
+        console.log(moderateIssue(githubClient))
+        console.log(lockIssue(githubClient))
       }
     } else {
       console.warn("ANTISPAM: Language detection failed.")
