@@ -95,6 +95,8 @@ if (context.payload.action === 'opened' && context.payload.issue.state === 'open
     const detector      = new LanguageDetect()
     const titleLanguage = detector.detect(title, 5)
     const bodyLanguage  = detector.detect(body, 5)
+    console.log("titleLanguage", titleLanguage)
+    console.log("bodyLanguage", bodyLanguage)
     if (bodyLanguage && bodyLanguage.length > 0 && titleLanguage && titleLanguage.length > 0) {
       const titleIsEnglish = titleLanguage.some(it => it[0] === 'english')
       const bodyIsEnglish  = bodyLanguage.some( it => it[0] === 'english')
