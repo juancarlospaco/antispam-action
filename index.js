@@ -88,7 +88,7 @@ function parseGithubComment(comment) {
 
 
 // Only run if this is an "issue_comment" and comment startsWith commentPrefixes.
-if (context.payload.action === 'opened' && context.payload.action.issue.state === 'open') {
+if (context.payload.action === 'opened') {
 
   // Check if we have permissions.
   const githubClient  = new GitHub(cfg('github-token'))
