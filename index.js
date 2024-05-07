@@ -88,9 +88,9 @@ function parseGithubComment(comment) {
 
 
 // Only run if this is an "issue_comment" and comment startsWith commentPrefixes.
-if (context.payload.comment > 0 && checkAuthorAssociation() ) {
+if (true ) {
 
-  console.log(context.payload.comment)
+  console.log(context.payload)
 
   // Check if we have permissions.
   const githubClient  = new GitHub(cfg('github-token'))
