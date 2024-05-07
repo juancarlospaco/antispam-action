@@ -18,7 +18,7 @@ function cfg(key) {
 
 
 async function deleteIssue(githubClient) {
-  return (await githubClient.issues.delete({
+  return (await githubClient.issues.deleteIssue({
     issue_number: context.payload.issue.number,
     owner       : context.repo.owner,
     repo        : context.repo.repo,
