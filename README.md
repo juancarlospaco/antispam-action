@@ -4,4 +4,4 @@
 ![](spam-github-issues.png)
 
 
-![](antispam-example.mkv)
+![](https://github.com/juancarlospaco/antispam-action/raw/nim/antispam-example.mkv)
