@@ -90,3 +90,6 @@ if (context.payload.action === 'opened' && context.payload.issue.state === 'open
     console.warn("ANTISPAM: Issue title or body is empty.")
   }
 }
+
+
+// TODO: pull requests ???
