@@ -19,12 +19,23 @@ function cfg(key) {
 
 async function moderateIssue(githubClient, title, body) {
   // Theres no API for Deleting issues, so we edit it to blank instead.
+  const moderatorMessage = `
+    **Moderated for suspected Spam.**
+    Only English language is supported for issues, because the moderators only speak English.
+    <details>
+    <summary>Diagnostics</summary>
+    *Title*
+    <code>${title}</code>
+    *Body*
+    <code>${body}</code>
+    </details>
+  `
   return (await githubClient.issues.update({
     issue_number: context.payload.issue.number,
     owner       : context.repo.owner,
     repo        : context.repo.repo,
     title       : "spam",
-    body        : `Moderated for suspected Spam. Only English is supported for issues, because the moderators only speak English.\n\nTitle:\t${title}\nbody:\t${body}`,
+    body        : moderatorMessage.trim(),
     labels      : ["spam"],
     assignees   : [],
     milestone   : null,
