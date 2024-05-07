@@ -21,12 +21,12 @@ async function moderateIssue(githubClient, title, body) {
   // Theres no API for Deleting issues, so we edit it to blank instead.
   const moderatorMessage = `
     **Moderated for suspected Spam.**
-    Only English language is supported for issues, because the moderators only speak English.
+    - Only English language is supported for issues, because moderators only speak English.
     <details>
     <summary>Diagnostics</summary>
-    *Title*
+    **Title**
     <code>${title}</code>
-    *Body*
+    **Body**
     <code>${body}</code>
     </details>
   `
@@ -80,7 +80,7 @@ if (context.payload.action === 'opened' && context.payload.issue.state === 'open
       } else {
         console.log("NOT ENGLISH")
         const githubClient  = new GitHub(cfg('github-token'))
-        console.log(moderateIssue(githubClient, titleLanguage, bodyLanguage))
+        console.log(moderateIssue(githubClient, JSON.stringify(titleLanguage), JSON.stringify(bodyLanguage)))
         console.log(lockIssue(githubClient))
       }
     } else {
