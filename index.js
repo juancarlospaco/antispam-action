@@ -77,7 +77,6 @@ async function moderateDiscussion(githubClient, title, body) {
 
 // Only run if this is a new issue or discussion opened and author is not owner or collaborator.
 if (isNewIssue || isNewDiscussion) {
-  console.log(context.payload)
   // Get issue title and body as a string.
   let title = ""
   let body  = ""
@@ -112,6 +111,7 @@ if (isNewIssue || isNewDiscussion) {
           console.log(moderateIssue(githubClient, JSON.stringify(titleLanguage), JSON.stringify(bodyLanguage)))
           console.log(lockIssue(githubClient))
         } else {
+          console.log(githubClient.discussions)
           moderateDiscussion(githubClient, JSON.stringify(titleLanguage), JSON.stringify(bodyLanguage))
         }
       }
